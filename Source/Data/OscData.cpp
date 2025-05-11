@@ -9,8 +9,12 @@ void OscData::prepareToPlay(double sampleRate, int samplesPerBlock, int outputCh
     spec.sampleRate = sampleRate;
     spec.numChannels = outputChannels;
 
+    // init main oscillator
     prepare(spec);
-    fmOsc.prepare(spec);
+
+    // init fm oscillator
+    fmOsc.prepare(spec);    
+
     gain.prepare(spec);
 }
 
@@ -52,14 +56,16 @@ void OscData::setOscPitch(const int pitch)
 
 void OscData::setFreq(const int midiNoteNumber)
 {
-    setFrequency(juce::MidiMessage::getMidiNoteInHertz((midiNoteNumber + lastPitch) + fmModulator));
+    // setFrequency(getMidiNoteInHertz((60 + 2) + 0.5)) -> getMidiNoteInHertz(62.5)
+    setFrequency(juce::MidiMessage::getMidiNoteInHertz((midiNoteNumber + lastPitch) + fmModulator));  // final midi note number
     lastMidiNote = midiNoteNumber;
 }
 
-void OscData::setFmOsc(const float freq, const float depth)
+void OscData::setFmOsc(const float freq, const float depth)  // 440 + 1000 = 1440   800
 {
     fmDepth = depth;
     fmOsc.setFrequency(freq);
+
     setFrequency(juce::MidiMessage::getMidiNoteInHertz((lastMidiNote + lastPitch) + fmModulator));
 }
 
@@ -73,6 +79,7 @@ void OscData::renderNextBlock(juce::dsp::AudioBlock<float>& audioBlock)
 
 float OscData::processNextSample(float input)
 {
+    // fmOsc.processSample(input) - sin value 0.5 (amplitude)
     fmModulator = fmOsc.processSample(input) * fmDepth;
     return gain.processSample(processSample(input));
 }

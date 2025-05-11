@@ -26,7 +26,7 @@ private:
 	static constexpr int numChannelsToProcess { 2 };
 	std::array<OscData, numChannelsToProcess> osc1;
 	std::array<FilterData, numChannelsToProcess> filter;
-	std::array<juce::dsp::Oscillator<float>, numChannelsToProcess> lfo;
+	//std::array<juce::dsp::Oscillator<float>, numChannelsToProcess> lfo;
 	AdsrData adsr;
 	juce::AudioBuffer<float> synthBuffer;
 

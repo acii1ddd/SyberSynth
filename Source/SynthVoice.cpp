@@ -49,8 +49,8 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
     {
         osc1[channel].prepareToPlay(sampleRate, samplesPerBlock, outputChannels);
         filter[channel].prepareToPlay(sampleRate, samplesPerBlock, outputChannels);
-        lfo[channel].prepare(spec);
-        lfo[channel].initialise([](float x) { return std::sin(x); });
+        //lfo[channel].prepare(spec);
+        //lfo[channel].initialise([](float x) { return std::sin(x); });
     }
 
     gain.prepare(spec);

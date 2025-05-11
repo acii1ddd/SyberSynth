@@ -158,7 +158,7 @@ bool SyberSynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layout
 }
 #endif
 
-void SyberSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void SyberSynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels = getTotalNumInputChannels();
@@ -168,9 +168,12 @@ void SyberSynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
+    // set value of parameters from ui
     setParams();
 
+    // main synthesiser process
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    
     juce::dsp::AudioBlock<float> block { buffer };
     reverb.process(juce::dsp::ProcessContextReplacing<float>(block));
 }

@@ -17,7 +17,9 @@ public:
 	void resetAll();
 
 private:
+	// frequency modulation oscillator
 	juce::dsp::Oscillator<float> fmOsc { [](float x) { return std::sin(x); } };
+	
 	juce::dsp::Gain<float> gain;
 	int lastPitch { 0 };
 	int lastMidiNote { 0 };
